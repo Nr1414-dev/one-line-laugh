@@ -44,6 +44,13 @@ def validate(text: str) -> None:
         )
     if not text.strip():
         raise ValueError("entry must not be only whitespace")
+    # The brief requires the entry to stand alone as a single sentence:
+    # exactly one sentence-terminating mark, and it must end the text.
+    terminators = sum(1 for ch in text if ch in ".?!")
+    if terminators != 1 or text[-1] not in ".?!":
+        raise ValueError(
+            f"entry must be a single sentence, got {terminators} terminators"
+        )
 
 
 def main() -> int:
